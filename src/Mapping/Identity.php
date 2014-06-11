@@ -28,7 +28,7 @@ class Identity implements AnnotationInterface
     public function __construct($value)
     {
         if (is_array($value)) {
-            $this->criteria = $value['value'];
+            $this->criteria = (isset($value['value'])) ? $value['value'] : [];
             $this->redirect = (isset($value['redirect'])) ? $value['redirect'] : null;
         }
     }
