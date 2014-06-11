@@ -8,11 +8,22 @@
 namespace Arilas\KronaBundle;
 
 
+use Doctrine\Common\Annotations\AnnotationRegistry;
 use Zend\Loader\AutoloaderFactory;
 use Zend\Loader\StandardAutoloader;
+use Zend\Mvc\MvcEvent;
 
 class Module
 {
+    public function onBootstrap(MvcEvent $e)
+    {
+        AnnotationRegistry::registerLoader(
+            function ($class) {
+                return class_exists($class);
+            }
+        );
+    }
+    
     public function getConfig()
     {
         return require_once __DIR__ . '/Resources/config/module.config.php';

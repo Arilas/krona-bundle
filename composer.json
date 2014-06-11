@@ -17,5 +17,8 @@
     "require": {
         "zendframework/zendframework": "2.*",
         "doctrine/annotations": "1.2.x-dev"
+    },
+    "require-dev": {
+        "arilas/whoops": "dev-master"
     }
 }
