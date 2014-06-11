@@ -30,7 +30,7 @@ trait ActionMixin
      */
     public function checkMethod(ReflectionMethod $reflectionMethod)
     {
-        $reader = $this->getAnnotationReader();
+        $reader = $this->getActionAnnotationReader();
         $annotations = $reader->getMethodAnnotations($reflectionMethod);
 
         foreach ($annotations as $annotation) {
@@ -40,7 +40,7 @@ trait ActionMixin
         }
     }
 
-    public function getAnnotationReader()
+    public function getActionAnnotationReader()
     {
         if (is_null($this->reader)) {
             $this->reader = new AnnotationReader();
