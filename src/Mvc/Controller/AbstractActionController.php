@@ -7,8 +7,13 @@
 
 namespace Arilas\KronaBundle\Mvc\Controller;
 
-use Arilas\KronaBundle\Common\AutoWiredMixin;
+use Arilas\KronaBundle\Common\Annotation\ActionMixin;
+use Arilas\KronaBundle\Common\Annotation\PropertiesMixin;
+use Arilas\KronaBundle\Mvc\AccessDeniedException;
+use Arilas\KronaBundle\Mvc\Exception\NotFoundException;
 use Zend\Mvc\Controller\AbstractActionController as BaseController;
+use Zend\Mvc\Exception\DomainException;
+use Zend\Mvc\MvcEvent;
 use Zend\ServiceManager\FactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 
@@ -18,7 +23,8 @@ use Zend\ServiceManager\ServiceLocatorInterface;
  */
 class AbstractActionController extends BaseController implements FactoryInterface
 {
-    use AutoWiredMixin;
+    use PropertiesMixin;
+    use ActionMixin;
 
     /**
      * Method uses for building Controller with initialize all dependencies
@@ -29,9 +35,39 @@ class AbstractActionController extends BaseController implements FactoryInterfac
     public function createService(ServiceLocatorInterface $serviceLocator)
     {
         $serviceLocator = $serviceLocator->getServiceLocator();
-        $this->processAutoWire($serviceLocator);
+        $this->process($serviceLocator);
 
         return $this;
+    }
+
+    public function onDispatch(MvcEvent $event)
+    {
+        $routeMatch = $event->getRouteMatch();
+        if (!$routeMatch) {
+            throw new DomainException('Missing route matches; unsure how to retrieve action');
+        }
+
+        $action = $routeMatch->getParam('action', 'not-found');
+        $method = static::getMethodFromAction($action);
+
+        $methodReflection = new \ReflectionMethod($this, $method);
+        try {
+            $this->checkMethod($methodReflection);
+        } catch (NotFoundException $e) {
+            if (!is_null($e->getRedirect())) {
+                return $this->redirect()->toRoute($e->getRedirect());
+            } else {
+                return $this->notFoundAction();
+            }
+        } catch (AccessDeniedException $e) {
+            if (!is_null($e->getRedirect())) {
+                return $this->redirect()->toRoute($e->getRedirect());
+            } else {
+                return $this->notFoundAction();
+            }
+        }
+
+        return parent::onDispatch($event);
     }
 
     /**

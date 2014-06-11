@@ -5,7 +5,7 @@
  * Time: 8:26 AM
  */
 
-namespace Arilas\KronaBundle\Common;
+namespace Arilas\KronaBundle\Common\Annotation;
 
 
 use Arilas\KronaBundle\Mapping\Converter\ConverterInterface;
@@ -17,7 +17,7 @@ use Zend\ServiceManager\ServiceLocatorInterface;
  * Trait AutoWiredMixin - uses for add AutoWired functionality to some class
  * @package Arilas\KronaBundle\Common
  */
-trait AutoWiredMixin
+trait PropertiesMixin
 {
     /** @var  AnnotationReader */
     protected $reader;
@@ -27,7 +27,7 @@ trait AutoWiredMixin
      *
      * @param ServiceLocatorInterface $serviceLocator
      */
-    public function processAutoWire(ServiceLocatorInterface $serviceLocator)
+    public function process(ServiceLocatorInterface $serviceLocator)
     {
         $reader = $this->getAnnotationReader();
         $reflectionClass = new ReflectionClass($this);
@@ -41,12 +41,7 @@ trait AutoWiredMixin
                     /** @var ConverterInterface $converter */
                     $converter = new $converterClassName();
                     $reflectionProperty->setAccessible(true);
-                    try {
-                        $reflectionProperty->setValue($this, $converter->convert($serviceLocator, $annotation));
-                    } catch (\Exception $e) {
-                        var_dump($e->getMessage());
-                        exit;
-                    }
+                    $reflectionProperty->setValue($this, $converter->convert($serviceLocator, $annotation));
                     $reflectionProperty->setAccessible(false);
                 }
             }
