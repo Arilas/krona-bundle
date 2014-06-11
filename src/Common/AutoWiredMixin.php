@@ -13,13 +13,17 @@ use Doctrine\Common\Annotations\AnnotationReader;
 use ReflectionClass;
 use Zend\ServiceManager\ServiceLocatorInterface;
 
+/**
+ * Trait AutoWiredMixin - uses for add AutoWired functionality to some class
+ * @package Arilas\KronaBundle\Common
+ */
 trait AutoWiredMixin
 {
     /** @var  AnnotationReader */
     protected $reader;
 
     /**
-     *
+     * Method used for proceed AutoWired Binding
      *
      * @param ServiceLocatorInterface $serviceLocator
      */

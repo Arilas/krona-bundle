@@ -13,5 +13,10 @@ use Zend\ServiceManager\ServiceLocatorInterface;
 
 interface ConverterInterface
 {
+    /**
+     * @param ServiceLocatorInterface $serviceLocator
+     * @param AnnotationInterface     $annotation
+     * @return mixed
+     */
     public function convert(ServiceLocatorInterface $serviceLocator, AnnotationInterface $annotation);
 } 

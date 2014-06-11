@@ -12,15 +12,19 @@ use Zend\Mvc\Controller\AbstractActionController as BaseController;
 use Zend\ServiceManager\FactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 
+/**
+ * Class AbstractActionController
+ * @package Arilas\KronaBundle\Mvc\Controller
+ */
 class AbstractActionController extends BaseController implements FactoryInterface
 {
     use AutoWiredMixin;
 
     /**
-     * Create service
+     * Method uses for building Controller with initialize all dependencies
      *
      * @param ServiceLocatorInterface $serviceLocator
-     * @return mixed
+     * @return $this
      */
     public function createService(ServiceLocatorInterface $serviceLocator)
     {
@@ -28,5 +32,27 @@ class AbstractActionController extends BaseController implements FactoryInterfac
         $this->processAutoWire($serviceLocator);
 
         return $this;
+    }
+
+    /**
+     * Method is a synonym of getServiceLocator()->get()
+     *
+     * @param $serviceName
+     * @return array|object
+     */
+    public function get($serviceName)
+    {
+        return $this->getServiceLocator()->get($serviceName);
+    }
+
+    /**
+     * Method is a synonym of getServiceLocator()->has()
+     *
+     * @param $serviceName
+     * @return bool
+     */
+    public function has($serviceName)
+    {
+        return $this->getServiceLocator()->has($serviceName);
     }
 }
