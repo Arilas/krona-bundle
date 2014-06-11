@@ -1,0 +1,21 @@
+{
+    "name": "arilas/krona-bundle",
+    "description": "Krona Bundle - ready use bundle of modules",
+    "minimum-stability": "dev",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Alex Grand",
+            "email": "Kiral.Group@gmail.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "Arilas\\KronaBundle\\": "src/"
+        }
+    },
+    "require": {
+        "zendframework/zendframework": "2.*",
+        "doctrine/annotations": "1.2.x-dev"
+    }
+}
