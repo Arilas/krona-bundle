@@ -35,7 +35,7 @@ class AbstractActionController extends BaseController implements FactoryInterfac
     public function createService(ServiceLocatorInterface $serviceLocator)
     {
         $serviceLocator = $serviceLocator->getServiceLocator();
-        $this->process($serviceLocator);
+        $this->processProperties($serviceLocator);
 
         return $this;
     }

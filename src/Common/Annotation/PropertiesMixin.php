@@ -27,7 +27,7 @@ trait PropertiesMixin
      *
      * @param ServiceLocatorInterface $serviceLocator
      */
-    public function process(ServiceLocatorInterface $serviceLocator)
+    public function processProperties(ServiceLocatorInterface $serviceLocator)
     {
         $reader = $this->getAnnotationReader();
         $reflectionClass = new ReflectionClass($this);
