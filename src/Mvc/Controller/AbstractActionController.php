@@ -47,6 +47,11 @@ class AbstractActionController extends BaseController implements FactoryInterfac
             throw new DomainException('Missing route matches; unsure how to retrieve action');
         }
 
+        $methods = $routeMatch->getParam('methods', []);
+        if (!empty($methods) && $methods[$this->getRequest()->getMethod()]) {
+            $routeMatch->setParam('action', $methods[$this->getRequest()->getMethod()]);
+        }
+
         $action = $routeMatch->getParam('action', 'not-found');
         $method = static::getMethodFromAction($action);
 
