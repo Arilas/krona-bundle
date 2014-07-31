@@ -72,7 +72,22 @@ class AbstractActionController extends BaseController implements FactoryInterfac
             }
         }
 
-        return parent::onDispatch($event);
+        if (!method_exists($this, $method)) {
+            $method = 'notFoundAction';
+        }
+
+        $actionResponse = $this->$method();
+
+        $event->setResult($actionResponse);
+
+        $this->postDispatch($actionResponse);
+
+        return $actionResponse;
+    }
+
+    protected function postDispatch($response)
+    {
+
     }
 
     /**
